@@ -34,12 +34,11 @@ micronaut {
 
 tasks.register<Copy>("processFrontendResources") {
     val backendTargetDir = project.layout.buildDirectory.dir("resources/main/static")
-    val frontendBuildDir =
-        project(":frontend").layout.projectDirectory.dir("dist")
+    val frontendBuildDir = gradle.includedBuild("frontend").projectDir.resolve("dist")
 
     group = "Frontend"
     description = "Process frontend resources"
-    dependsOn(":frontend:assembleFrontend")
+    dependsOn(gradle.includedBuild("frontend").task(":assembleFrontend"))
 
     from(frontendBuildDir)
     into(backendTargetDir)
